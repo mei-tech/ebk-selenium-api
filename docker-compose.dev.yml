@@ -1,0 +1,23 @@
+version: '3'
+services:
+    firefox:
+        image: selenium/standalone-firefox-debug:latest
+        environment:
+            - VNC_NO_PASSWORD=1
+        ports:
+            # driver port
+            - 4444:4444
+            # vnc port
+            - 5901:5900
+    driverapi:
+        build:
+          context: ./driverapi
+          dockerfile: Dockerfile.dev
+        image: driverapi:test
+        volumes:
+            - ./driverapi:/app
+        depends_on:
+            - firefox
+        links:
+            - firefox
+            
